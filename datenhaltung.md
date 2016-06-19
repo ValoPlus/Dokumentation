@@ -6,6 +6,7 @@ Neben den eigentlichen Devices (Ein Device = 1 Hardware Controller) können auf 
 
 - Device
 	- Channel
+		- Status
 		- (LED)
 - Gruppe
 	- Device
@@ -36,3 +37,9 @@ Falls eine Aktualisierung eines Channels oder dessen Status von dem Device nicht
 Eine solche Syncronisierung ist im ersten Schritt nicht vorgesehen.
 
 ## Nicht Persistierte Daten
+Daten, die sich häufig ändern, werden nicht persistiert. Dazu gehört der aktuelle Status aller Channel der Devices, die Einstellungen für jeden Channel sowie die WLAN Einstellungen der Devices.
+
+### Datenaktualisierung
+1. **Start der App** (platform.ready()): Der Status aller Devices werden abgerufen.
+2. **Aufruf eines Channels** (DetailChannelPage.onPageWillEnter()): Für den Channel werden die Einstellungen abgerufen.
+3. **Manuelle Aktualisierung der Stati**: Auf der Startseite kann der Status aller Devices manuell erneut abgerufen werden. Hierbei soll die Prozedur aus 1. erneut erfolgen.
