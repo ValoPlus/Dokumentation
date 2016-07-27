@@ -3,13 +3,13 @@ domain {
     A ControllableElement is everything which can be controlled,
     e.g. a group, a device or a led.
     */
-    export abstract valoplus.ControllableElement {
+    abstract valoplus.ControllableElement {
         String name
     }
 
     /*
     A Group can contain all kind of ControllableElement. It is only stored
-    on the Client.
+    on the Base.
     */
     valoplus.Group : ControllableElement {
         Collection<ControllableElement> members
@@ -18,12 +18,26 @@ domain {
     /*
     A Device is a physical controller. This object stores all of its configuration
     */
-    valoplus.Device: ControllableElement {
+    abstract valoplus.Device: ControllableElement {
         String ip
         String key
         Integer maxChannel
         Boolean isConfigured
         Collection<ChannelElement> elements
+    }
+    
+    /*
+    A master can be accessed by the client
+    */
+    export valoplus.Master : Device {
+    
+    }
+    
+    /*
+    A Slave is a device managed by the master.
+    */
+    valoplus.Slave : Device {
+    
     }
 
     /*
