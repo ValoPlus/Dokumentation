@@ -1,0 +1,58 @@
+domain {
+    /*
+    A ControllableElement is everything which can be controlled,
+    e.g. a group, a device or a led.
+    */
+    export abstract valoplus.ControllableElement {
+        String name
+    }
+
+    /*
+    A Group can contain all kind of ControllableElement. It is only stored
+    on the Device.
+    */
+    valoplus.Group : ControllableElement {
+        Collection<ControllableElement> members
+    }
+
+    /*
+    A Device is a physical controller. This object stores all of its configuration
+    */
+    valoplus.Device: ControllableElement {
+        String ip
+        String key
+        Integer maxChannel
+        Boolean isConfigured
+        Collection<ChannelElement> elements
+    }
+
+    /*
+    A ChannelElement is an element connected direct to the Device.
+    */
+    abstract valoplus.ChannelElement : ControllableElement {
+        State state
+    }
+
+    /*
+    The State contains the information if a ChannelElement is active.
+    Also detailed information like actual colors can be stored.
+    */
+    valoplus.State {
+        Boolean active
+    }
+
+    valoplus.WsLeds : ChannelElement {
+        Integer channelId
+        Integer ledCount
+    }
+
+    valoplus.LedStrip : ChannelElement {
+        Integer channelId
+    }
+
+    valoplus.RgbLedStrip : ChannelElement {
+        Integer channelIdRed
+        Integer channelIdGreen
+        Integer channelIdBlue
+    }
+}
