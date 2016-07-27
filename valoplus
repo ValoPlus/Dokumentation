@@ -9,7 +9,7 @@ domain {
 
     /*
     A Group can contain all kind of ControllableElement. It is only stored
-    on the Device.
+    on the Client.
     */
     valoplus.Group : ControllableElement {
         Collection<ControllableElement> members
@@ -41,16 +41,16 @@ domain {
         Boolean active
     }
 
-    valoplus.WsLeds : ChannelElement {
+    valoplus.AdressableRgbLed : ChannelElement {
         Integer channelId
         Integer ledCount
     }
 
-    valoplus.LedStrip : ChannelElement {
+    valoplus.SingleColorLed : ChannelElement {
         Integer channelId
     }
 
-    valoplus.RgbLedStrip : ChannelElement {
+    valoplus.RgbLed : ChannelElement {
         Integer channelIdRed
         Integer channelIdGreen
         Integer channelIdBlue
