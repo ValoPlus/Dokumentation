@@ -30,7 +30,7 @@ domain {
     A master can be accessed by the client
     */
     export valoplus.Master : Device {
-    
+        Password password
     }
     
     /*
@@ -69,4 +69,13 @@ domain {
         Integer channelIdGreen
         Integer channelIdBlue
     }
+}
+service {
+	/*
+	Service to access the states of the ControllableElements.
+	*/
+	valoplus.ControllService {
+		Unit ControllableElement.toggle()
+		Unit ControllableElement.addToGroup(Group group)
+	}
 }
