@@ -12,7 +12,9 @@ domain {
     on the Base.
     */
     valoplus.Group : ControllableElement {
-        Collection<ControllableElement> members
+        Collection<ControllableElement> members #validate {
+        	hierarchy(collectableMembers)
+        }
     }
 
     /*
@@ -77,5 +79,6 @@ service {
 	valoplus.ControllService {
 		Unit ControllableElement.toggle()
 		Unit ControllableElement.addToGroup(Group group)
+		Unit Group.addElements(Collection<ControllableElement> element)
 	}
 }
