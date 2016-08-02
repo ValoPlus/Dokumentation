@@ -1,0 +1,84 @@
+domain {
+    /*
+    A ControllableElement is everything which can be controlled,
+    e.g. a group, a device or a led.
+    */
+    abstract valoplus.ControllableElement {
+        String name
+    }
+
+    /*
+    A Group can contain all kind of ControllableElement. It is only stored
+    on the Base.
+    */
+    valoplus.Group : ControllableElement {
+        Collection<ControllableElement> members #validate {
+        	hierarchy(collectableMembers)
+        }
+    }
+
+    /*
+    A Device is a physical controller. This object stores all of its configuration
+    */
+    abstract valoplus.Device: ControllableElement {
+        String ip
+        String key
+        Integer maxChannel
+        Boolean isConfigured
+        Collection<ChannelElement> elements
+    }
+    
+    /*
+    A master can be accessed by the client
+    */
+    export valoplus.Master : Device {
+        Password password
+    }
+    
+    /*
+    A Slave is a device managed by the master.
+    */
+    valoplus.Slave : Device {
+    
+    }
+
+    /*
+    A ChannelElement is an element connected direct to the Device.
+    */
+    abstract valoplus.ChannelElement : ControllableElement {
+        State state
+    }
+
+    /*
+    The State contains the information if a ChannelElement is active.
+    Also detailed information like actual colors can be stored.
+    */
+    valoplus.State {
+        Boolean active
+    }
+
+    valoplus.AdressableRgbLed : ChannelElement {
+        Integer channelId
+        Integer ledCount
+    }
+
+    valoplus.SingleColorLed : ChannelElement {
+        Integer channelId
+    }
+
+    valoplus.RgbLed : ChannelElement {
+        Integer channelIdRed
+        Integer channelIdGreen
+        Integer channelIdBlue
+    }
+}
+service {
+	/*
+	Service to access the states of the ControllableElements.
+	*/
+	valoplus.ControllService {
+		Unit ControllableElement.toggle()
+		Unit ControllableElement.addToGroup(Group group)
+		Unit Group.addElements(Collection<ControllableElement> element)
+	}
+}
