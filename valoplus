@@ -3,7 +3,7 @@ domain {
     A ControllableElement is everything which can be controlled,
     e.g. a group, a device or a led.
     */
-    abstract valoplus.ControllableElement {
+    export abstract valoplus.ControllableElement {
         String name
     }
 
@@ -13,51 +13,43 @@ domain {
     */
     valoplus.Group : ControllableElement {
         Collection<ControllableElement> members #validate {
-        	hierarchy(collectableMembers)
+        	hierarchy(controllable)
         }
     }
 
     /*
     A Device is a physical controller. This object stores all of its configuration
     */
-    abstract valoplus.Device: ControllableElement {
+    abstract valoplus.Device : ControllableElement {
         String ip
         String key
         Integer maxChannel
         Boolean isConfigured
         Collection<ChannelElement> elements
     }
-    
+
     /*
     A master can be accessed by the client
     */
-    export valoplus.Master : Device {
-        Password password
+    valoplus.Master : Device {
+        String password
     }
-    
+
     /*
     A Slave is a device managed by the master.
     */
     valoplus.Slave : Device {
-    
+
     }
 
     /*
     A ChannelElement is an element connected direct to the Device.
     */
     abstract valoplus.ChannelElement : ControllableElement {
-        State state
-    }
-
-    /*
-    The State contains the information if a ChannelElement is active.
-    Also detailed information like actual colors can be stored.
-    */
-    valoplus.State {
-        Boolean active
     }
 
     valoplus.AdressableRgbLed : ChannelElement {
+        StateAdressableRgbLed stateAdressableRgbLed
         Integer channelId
         Integer ledCount
     }
@@ -71,14 +63,42 @@ domain {
         Integer channelIdGreen
         Integer channelIdBlue
     }
+
+    /*
+    The State contains the information if a ChannelElement is active.
+    Also detailed information like actual colors can be stored.
+    */
+    abstract valoplus.State {
+        Boolean active
+    }
+
+    valoplus.StateAdressableRgbLed : State {
+        Integer brightness
+    }
 }
 service {
 	/*
 	Service to access the states of the ControllableElements.
 	*/
-	valoplus.ControllService {
+	export valoplus.ControllService {
+        /*
+        Toggle the state of the ControllableElement. As the Result the state of theElement is changed.
+        */
 		Unit ControllableElement.toggle()
+	}
+
+    export valoplus.TimingEventsService {
+        Unit ControllableElement.createTimedEvent()
+    }
+
+    /*
+    Service to edit the hierarchy.
+    */
+    export valoplus.EditService {
+        Repository ControllableElement
+
+        Unit Device.addChannelElement(ChannelElement channel)
 		Unit ControllableElement.addToGroup(Group group)
 		Unit Group.addElements(Collection<ControllableElement> element)
-	}
+    }
 }
