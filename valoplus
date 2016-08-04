@@ -27,19 +27,19 @@ domain {
         Boolean isConfigured
         Collection<ChannelElement> elements
     }
-
+    
     /*
     A master can be accessed by the client
     */
     export valoplus.Master : Device {
         Password password
     }
-
+    
     /*
     A Slave is a device managed by the master.
     */
     valoplus.Slave : Device {
-
+    
     }
 
     /*
@@ -77,19 +77,8 @@ service {
 	Service to access the states of the ControllableElements.
 	*/
 	valoplus.ControllService {
-        /*
-        Toggle the state of the ControllableElement. As the Result the state of theElement is changed.
-        */
 		Unit ControllableElement.toggle()
-	}
-
-    /*
-    Service to edit the hierarchy.
-    */
-    valoplus.EditService {
-        Unit Device.addChannelElement(ChannelElement channel)
-        
 		Unit ControllableElement.addToGroup(Group group)
 		Unit Group.addElements(Collection<ControllableElement> element)
-    }
+	}
 }
